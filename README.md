@@ -1,8 +1,8 @@
 # the_mainspring
 
-> *"Intelligent discontent is the mainspring of civilization."* — Eugene V. Debs
+> *"Intelligent discontent is the mainspring of civilization."*, Eugene V. Debs
 
-A self-hosted, privacy-first news aggregator and AI summarizer for progressive/left-wing media. Pulls RSS feeds from 14 outlets, scrapes full article text, and generates summaries using a locally-running BART model — **no API keys, no cloud services, no data leaving your machine.**
+A self-hosted, privacy-first news aggregator and AI summarizer for progressive/left-wing media. Pulls RSS feeds from 14 outlets, scrapes full article text, and generates summaries using a locally-running BART model, **no API keys, no cloud services, no data leaving your machine.**
 
 ---
 
@@ -10,11 +10,11 @@ A self-hosted, privacy-first news aggregator and AI summarizer for progressive/l
 
 **Your reading habits are your business.** Commercial news aggregators and AI summary tools send your queries, reading history, and interests to third-party servers. This app runs entirely on your hardware:
 
-- **No API keys.** The BART model runs locally — no OpenAI, no Anthropic, no Google.
+- **No API keys.** The BART model runs locally, no OpenAI, no Anthropic, no Google.
 - **No data egress.** Articles are fetched and stored in a local SQLite database. Nothing is uploaded anywhere.
 - **No tracking.** No accounts, no analytics, no telemetry.
 - **No subscriptions.** One-time model download (~1.6 GB), then it runs forever offline.
-- **Complete data sovereignty.** Your digest, your summaries, your history — stored in a single `news.db` file you control entirely.
+- **Complete data sovereignty.** Your digest, your summaries, your history, stored in a single `news.db` file you control entirely.
 - **Audit everything.** The full source code is ~600 lines of Python and vanilla JS. Read it in an afternoon.
 
 ---
@@ -44,13 +44,13 @@ Adding or removing outlets requires a one-line change in `scraper.py`.
 
 ## Features
 
-- **AI Summaries** — Each article is summarized by `sshleifer/distilbart-cnn-12-6`, a distilled version of Facebook's BART model fine-tuned on CNN/DailyMail news.
-- **Daily Digest** — After all articles are summarized, BART generates a single digest summary for the entire day's news.
-- **Real-time Dashboard** — Dark-themed single-page web UI with date picker, per-source filtering, article counts, and live polling (summaries appear as they complete).
-- **Scheduled Refresh** — APScheduler runs the full pipeline every 6 hours automatically.
-- **Deduplication** — Articles are keyed by URL; re-runs never create duplicates.
-- **Full-text Extraction** — BeautifulSoup strips nav/footer/ads/sidebars and extracts main article content before summarization.
-- **Dev Mode** — Skip the model entirely and get instant fake summaries for UI development.
+- **AI Summaries**, Each article is summarized by `sshleifer/distilbart-cnn-12-6`, a distilled version of Facebook's BART model fine-tuned on CNN/DailyMail news.
+- **Daily Digest**, After all articles are summarized, BART generates a single digest summary for the entire day's news.
+- **Real-time Dashboard**, Dark-themed single-page web UI with date picker, per-source filtering, article counts, and live polling (summaries appear as they complete).
+- **Scheduled Refresh**, APScheduler runs the full pipeline every 6 hours automatically.
+- **Deduplication**, Articles are keyed by URL; re-runs never create duplicates.
+- **Full-text Extraction**, BeautifulSoup strips nav/footer/ads/sidebars and extracts main article content before summarization.
+- **Dev Mode**, Skip the model entirely and get instant fake summaries for UI development.
 
 ---
 
@@ -115,11 +115,11 @@ uvicorn main:app --host 0.0.0.0 --port 8000
 Then open **http://localhost:8000** in your browser.
 
 **First-run timeline:**
-- Model download: ~5–15 minutes depending on connection speed (one-time; cached by HuggingFace in `~/.cache/huggingface/`)
-- Initial feed fetch + scrape: ~1–3 minutes
-- Summarization of ~50–100 articles: ~20–60 minutes on CPU; ~2–5 minutes on GPU
+- Model download: ~5-15 minutes depending on connection speed (one-time; cached by HuggingFace in `~/.cache/huggingface/`)
+- Initial feed fetch + scrape: ~1-3 minutes
+- Summarization of ~50-100 articles: ~20-60 minutes on CPU; ~2-5 minutes on GPU
 
-Articles appear in the dashboard immediately with a "Summarizing…" spinner. Summaries populate in real time — the page polls every 10 seconds automatically and stops once all articles are done.
+Articles appear in the dashboard immediately with a "Summarizing…" spinner. Summaries populate in real time, the page polls every 10 seconds automatically and stops once all articles are done.
 
 ---
 
@@ -201,8 +201,8 @@ RSS Feeds (14 outlets)
 1. For each new article, `scraper.scrape_article_text()` fetches the full HTML and strips boilerplate (nav, footer, ads, sidebars) using tag name and CSS class heuristics.
 2. If scraping fails or returns less than 200 characters (paywalled or JS-rendered), the app falls back to the RSS `<description>` text.
 3. Text is passed to BART's tokenizer (max 1024 tokens; excess is truncated).
-4. Beam search (4 beams, no-repeat-ngram-size=3) produces a summary of 40–150 tokens.
-5. After all articles for the day are done, their summaries are concatenated and BART produces a single 80–250-token daily digest.
+4. Beam search (4 beams, no-repeat-ngram-size=3) produces a summary of 40-150 tokens.
+5. After all articles for the day are done, their summaries are concatenated and BART produces a single 80-250-token daily digest.
 
 ### Database Schema
 
@@ -246,7 +246,7 @@ RSS Feeds (14 outlets)
 Because this app is designed for local use:
 
 - By default it binds to `0.0.0.0:8000` (all interfaces). If you run it on a machine accessible from a network, either bind to `127.0.0.1` or put it behind a reverse proxy (nginx/Caddy) with authentication.
-- There is no authentication layer — anyone who can reach the port can trigger a feed refresh via `POST /api/refresh`.
+- There is no authentication layer, anyone who can reach the port can trigger a feed refresh via `POST /api/refresh`.
 - The SQLite database is stored in plaintext. Keep it on an encrypted volume if your reading history is sensitive.
 
 ---

@@ -124,14 +124,14 @@ def _extract_text(html: str) -> str:
     """
     soup = BeautifulSoup(html, "lxml")
 
-    # Step 1 — Remove entire tag families that are never article content.
+    # Step 1, Remove entire tag families that are never article content.
     for tag in soup.find_all(
         ["nav", "footer", "script", "style", "aside", "header",
          "noscript", "figure", "figcaption", "iframe"]
     ):
         tag.decompose()
 
-    # Step 2 — Remove elements whose class or id name hints at boilerplate.
+    # Step 2, Remove elements whose class or id name hints at boilerplate.
     # This catches things like <div class="sidebar">, <div id="newsletter-signup">, etc.
     junk_patterns = re.compile(
         r"(nav|footer|sidebar|menu|advert|banner|cookie|popup|modal|social|share|"
@@ -144,7 +144,7 @@ def _extract_text(html: str) -> str:
         if junk_patterns.search(cls) or junk_patterns.search(eid):
             el.decompose()
 
-    # Step 3 — Walk through selectors from most to least specific.
+    # Step 3, Walk through selectors from most to least specific.
     # The first one that matches is treated as the article container.
     for selector in [
         "article",          # semantic HTML5 element
@@ -161,7 +161,7 @@ def _extract_text(html: str) -> str:
         if container:
             return container.get_text(separator=" ", strip=True)
 
-    # Step 4 — Last resort: return all remaining text from the page.
+    # Step 4, Last resort: return all remaining text from the page.
     return soup.get_text(separator=" ", strip=True)
 
 

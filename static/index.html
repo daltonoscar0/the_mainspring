@@ -59,7 +59,7 @@
     a { color: inherit; text-decoration: none; }
     a:hover { color: var(--red); }
 
-    /* ─── Shell — top-level grid ──────────────────────────────────────────── */
+    /* ─── Shell, top-level grid ──────────────────────────────────────────── */
     /* Two named columns: fixed-width sidebar + flexible main area.
        Two rows: header spanning both columns, then sidebar | main below. */
     .shell {
@@ -105,7 +105,7 @@
       color: var(--text);
     }
 
-    /* "DEV" badge — shown only when DEV_MODE is active on the server */
+    /* "DEV" badge, shown only when DEV_MODE is active on the server */
     #dev-badge {
       display: none;   /* toggled to inline by JS when [DEV] summaries are detected */
       font-size: 11px;
@@ -163,7 +163,7 @@
       border-bottom: 1px solid var(--border);
     }
 
-    /* Date picker input — styled to match the dark theme */
+    /* Date picker input, styled to match the dark theme */
     #date-picker {
       width: 100%;
       background: var(--bg3);
@@ -176,7 +176,7 @@
     }
     #date-picker:focus { outline: 1px solid var(--red); }
 
-    /* Source filter list — vertical stack of checkbox rows */
+    /* Source filter list, vertical stack of checkbox rows */
     .source-list { display: flex; flex-direction: column; gap: 6px; }
 
     .source-item {
@@ -186,7 +186,7 @@
       cursor: pointer;
     }
 
-    /* Custom checkbox: default is a dark square; checked becomes solid red with a ✓ */
+    /* Custom checkbox: default is a dark square; checked becomes solid red with a  */
     .source-item input[type="checkbox"] {
       appearance: none;
       width: 13px; height: 13px;
@@ -233,7 +233,7 @@
       padding: 28px 36px;
     }
 
-    /* "42 articles — filtered" label above the article list */
+    /* "42 articles, filtered" label above the article list */
     #article-count-label {
       display: block;
       font-size: 11px;
@@ -242,7 +242,7 @@
       letter-spacing: 0.5px;
     }
 
-    /* ─── Article list — newspaper column style ───────────────────────────── */
+    /* ─── Article list, newspaper column style ───────────────────────────── */
     /* Simple vertical stack; each card is separated by a horizontal rule. */
     #article-grid {
       display: flex;
@@ -270,7 +270,7 @@
       font-size: 13px;
     }
 
-    /* Article headline — links to the original article */
+    /* Article headline, links to the original article */
     .card-title {
       font-size: 18px;
       font-weight: normal;
@@ -279,7 +279,7 @@
     }
     .card-title a:hover { color: var(--red); }
 
-    /* Summary text — dimmer than headline to create visual hierarchy */
+    /* Summary text, dimmer than headline to create visual hierarchy */
     .card-summary {
       font-size: 14px;
       color: var(--dim);
@@ -400,7 +400,7 @@
   // ---------------------------------------------------------------------------
 
   /**
-   * Entry point — called once when the page loads.
+   * Entry point, called once when the page loads.
    * Sets the date picker to today, wires up the change listener, loads sources,
    * then loads the initial article data.
    */
@@ -449,7 +449,7 @@
     try {
       const j = await fetch(`/api/articles?date=${date}`).then(r => r.json());
 
-      // Deduplicate by URL — the API shouldn't return duplicates, but this
+      // Deduplicate by URL, the API shouldn't return duplicates, but this
       // guards against any edge cases in the pipeline.
       const seen = new Set();
       allArticles = (j.articles || []).filter(a => {
@@ -457,7 +457,7 @@
         seen.add(a.url); return true;
       });
 
-      // If any summary starts with "[DEV]", the server is in dev mode — show badge.
+      // If any summary starts with "[DEV]", the server is in dev mode, show badge.
       if (allArticles.some(a => a.summary && a.summary.startsWith('[DEV]')))
         document.getElementById('dev-badge').style.display = 'inline';
 
@@ -505,7 +505,7 @@
         if (!allArticles.some(a => a.summarizing || (!a.summary && !a.summarizing)))
           stopPoll();
       } catch(_) {
-        // Silently ignore poll errors — the user can see the last good state.
+        // Silently ignore poll errors, the user can see the last good state.
       }
     }, 10000);  // 10 seconds
   }
@@ -548,7 +548,7 @@
       label.className = 'source-label';
       label.textContent = src;
 
-      // Count badge — id uses slugified source name for reliable DOM lookup.
+      // Count badge, id uses slugified source name for reliable DOM lookup.
       const count = document.createElement('span');
       count.className = 'source-count';
       count.id = `count-${slugify(src)}`;
@@ -613,7 +613,7 @@
     while (pool.length) {
       // Find the first article from a different source than the previous one.
       let idx = pool.findIndex(a => a.source !== lastSource);
-      if (idx === -1) idx = 0;  // no different source available — just take next
+      if (idx === -1) idx = 0;  // no different source available, just take next
       filtered.push(pool.splice(idx, 1)[0]);
       lastSource = filtered[filtered.length - 1].source;
     }
@@ -640,9 +640,9 @@
    * Card structure:
    *   .article-card
    *     .card-left
-   *       .card-byline   — "Jacobin  ·  Apr 7, 10:30 AM EST"
-   *       .card-title    — linked headline
-   *       .card-summary  — BART summary, or a spinner if still summarizing
+   *       .card-byline, "Jacobin  ·  Apr 7, 10:30 AM EST"
+   *       .card-title, linked headline
+   *       .card-summary, BART summary, or a spinner if still summarizing
    *
    * @param {Object} a - Article object from the API response.
    * @returns {HTMLElement}
@@ -665,7 +665,7 @@
       byline.appendChild(document.createTextNode('  ·  ' + formatTime(a.published_date)));
     }
 
-    // Headline — opens the original article in a new tab
+    // Headline, opens the original article in a new tab
     const titleEl = document.createElement('div');
     titleEl.className = 'card-title';
     const titleLink = document.createElement('a');
@@ -675,7 +675,7 @@
     titleLink.textContent = a.title;
     titleEl.appendChild(titleLink);
 
-    // Summary — either the BART text, or a spinner while the model is working
+    // Summary, either the BART text, or a spinner while the model is working
     const summaryEl = document.createElement('div');
     if (a.summarizing || (!a.summary && !a.summarizing)) {
       // summarizing=true: actively being processed
@@ -746,7 +746,7 @@
 
   /**
    * Convert a source name into a CSS-safe id fragment.
-   * Example: "People's World" → "people-s-world"
+   * Example: "People's World" -> "people-s-world"
    * Used to build unique DOM ids for the per-source count badges.
    *
    * @param {string} s - Source name

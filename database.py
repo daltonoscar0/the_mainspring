@@ -29,7 +29,7 @@ DATABASE_URL = f"sqlite:///{DB_PATH}"
 
 # check_same_thread=False is required for SQLite when multiple threads share a
 # connection. FastAPI's background tasks and the ThreadPoolExecutor in main.py
-# both open their own sessions via SessionLocal, so this is safe — each thread
+# both open their own sessions via SessionLocal, so this is safe, each thread
 # gets its own Session rather than sharing one connection object.
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 
@@ -62,7 +62,7 @@ def init_db():
     the model modules here ensures their Table definitions are registered
     on Base.metadata before create_all() runs.
     """
-    from models import Article, DailyDigest  # noqa: F401 — side-effect import
+    from models import Article, DailyDigest  # noqa: F401, side-effect import
     Base.metadata.create_all(bind=engine)
 
 

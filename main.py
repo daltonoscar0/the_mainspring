@@ -57,7 +57,7 @@ DEV_MODE = os.environ.get("DEV_MODE", "").lower() in ("1", "true", "yes")
 
 
 # ---------------------------------------------------------------------------
-# Pipeline — private helpers
+# Pipeline, private helpers
 # ---------------------------------------------------------------------------
 
 def _upsert_article(db: Session, data: dict) -> Article | None:
@@ -136,7 +136,7 @@ def _summarize_article(article_id: int):
             article.full_text = full_text
 
         if len(full_text.strip()) > 100:
-            # Enough text to summarize — run BART.
+            # Enough text to summarize, run BART.
             article.summary = summ.summarize(full_text)
         else:
             # Nothing usable. Leave summary=None and clear the flag so the
@@ -199,7 +199,7 @@ def _build_daily_digest(date_str: str):
         )
 
         if not articles:
-            # No summarized articles for this day yet — nothing to digest.
+            # No summarized articles for this day yet, nothing to digest.
             return
 
         # Build the combined input for BART: "Title: summary Title: summary ..."
@@ -235,7 +235,7 @@ def _build_daily_digest(date_str: str):
 
 
 # ---------------------------------------------------------------------------
-# Pipeline — public entry point
+# Pipeline, public entry point
 # ---------------------------------------------------------------------------
 
 def run_pipeline():
@@ -305,7 +305,7 @@ async def lifespan(app: FastAPI):
 
     # Load the BART model into memory. This blocks startup briefly while the
     # model weights are read from disk (a few seconds). The one-time download
-    # on first run may take 5–15 minutes depending on connection speed.
+    # on first run may take 5-15 minutes depending on connection speed.
     summ.load_model()
 
     # Run the initial pipeline in a background thread so the server doesn't

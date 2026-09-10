@@ -125,7 +125,7 @@ def summarize(text: str, max_length: int = 150, min_length: int = 40) -> str:
         early_stopping=True  — Stop beam search once all beams produce an EOS
                                token (avoids unnecessary extra compute).
     """
-    # Skip very short inputs — not enough context for BART to summarize.
+    # Skip very short inputs, not enough context for BART to summarize.
     if not text or len(text.strip()) < 100:
         return text.strip() if text else ""
 

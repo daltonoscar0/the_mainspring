@@ -55,7 +55,7 @@ class Article(Base):
     # better content scraped directly from the article URL in _summarize_article().
     full_text = Column(Text, nullable=True)
 
-    # BART-generated summary (40–150 tokens). NULL until summarization completes.
+    # BART-generated summary (40-150 tokens). NULL until summarization completes.
     # The frontend treats NULL + summarizing=False as "still pending" (shows spinner).
     summary = Column(Text, nullable=True)
 
@@ -82,11 +82,11 @@ class DailyDigest(Base):
     # Auto-incremented integer primary key.
     id = Column(Integer, primary_key=True, index=True)
 
-    # Calendar date in ISO format (YYYY-MM-DD). Unique — one digest per day.
+    # Calendar date in ISO format (YYYY-MM-DD). Unique, one digest per day.
     # Used as the lookup key in the /api/digest endpoint.
     date = Column(String(10), unique=True, nullable=False, index=True)
 
-    # BART-generated digest of the day's news (80–250 tokens).
+    # BART-generated digest of the day's news (80-250 tokens).
     summary = Column(Text, nullable=True)
 
     # Number of articles that were included when this digest was built.
