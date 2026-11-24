@@ -8,3 +8,10 @@ tasks/lessons.md
 tasks/todo.md
 .venv/
 __pycache__/
+
+# The app's own SQLite store, created by database.create_all() on first run.
+news.db
+*.db
+
+# macOS
+.DS_Store
